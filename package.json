@@ -1,7 +1,7 @@
 {
-  "name": "Transnet",
+  "name": "Mika-App",
   "version": "1.0.0",
-  "description": "My gnarly Nuxt.js project",
+  "description": "Mika-App-Sample Bootstrap",
   "author": "hasbycs",
   "private": true,
   "scripts": {

@@ -11,6 +11,11 @@ export default {
       local: {
         endpoints: {
           login: { url: 'login', method: 'post', propertyName: 'data.token' },
+          user: {
+            url: 'ldap/api/auth/account?include=username',
+            method: 'get',
+            propertyName: 'data'
+          },
           logout: false
         }
       }
