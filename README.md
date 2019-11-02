@@ -1,6 +1,6 @@
-# Transnet
+# Mika App Sample
 
-> My gnarly Nuxt.js project
+> Mika-App-Sample Bootstrap
 
 ## Build Setup
 
