@@ -1,6 +1,6 @@
 <template>
   <section class="bg-info">
-    <div class="container">
+    <div class="containerr">
       <div class="d-flex justify-content-center h-100">
         <div class="card card-login">
           <div class="card-header">

@@ -12,7 +12,7 @@ export default {
         endpoints: {
           login: { url: 'login', method: 'post', propertyName: 'data.token' },
           user: {
-            url: 'ldap/api/auth/account?include=username',
+            url: 'users/1',
             method: 'get',
             propertyName: 'data'
           },
@@ -50,6 +50,7 @@ export default {
   */
   plugins: [
     '~/plugins/axios.js',
+    '~/plugins/vee-validate.js'
   ],
   /*
   ** Nuxt.js dev-modules

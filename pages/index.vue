@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="containerr">
     <div>
       <logo />
       <h1 class="title">
