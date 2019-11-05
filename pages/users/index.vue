@@ -26,7 +26,11 @@
         <div class="col-lg-6 mb-2"
             v-for="(item, i) in listToShow"
             :key="isLoadingUsers ? i : item.id">
-          <UserItem :user="item"/>
+          <UserItem 
+            :user="item"
+            @change:edit="openFormEdit"
+            @change:delete="deleteData"
+          />
         </div>
       </div>
     </div>
@@ -93,27 +97,27 @@
           <div class="form-group col-md-6">
             <label>Gender</label>
             <div class="custom-control custom-radio">
-            <input type="radio" id="male" name="gender" value="Male" class="custom-control-input">
+            <input type="radio" id="male" name="gender" v-model="gender" value="Male" class="custom-control-input">
               <label class="custom-control-label" for="male">Male</label>
             </div>
             <div class="custom-control custom-radio">
-              <input type="radio" id="female" name="gender" class="custom-control-input">
+              <input type="radio" id="female" name="gender" v-model="gender" value="Female" class="custom-control-input">
               <label class="custom-control-label" for="female">Female</label>
             </div>
-            <small v-show="errors.has('user.password')" class="text-danger">{{ errors.first('user.password') }}</small>
+            <small v-show="errors.has('user.gender')" class="text-danger">{{ errors.first('user.gender') }}</small>
           </div>
 
           <div class="form-group col-md-6">
             <label>Is Active</label>
             <div class="custom-control custom-radio">
-            <input type="radio" id="yes" name="isactive" class="custom-control-input">
+              <input type="radio" id="yes" name="isactive" value="1" v-model="isActive" class="custom-control-input">
               <label class="custom-control-label" for="yes">Yes</label>
             </div>
             <div class="custom-control custom-radio">
-              <input type="radio" id="no" name="isactive" class="custom-control-input">
+              <input type="radio" id="no" name="isactive" value="2" v-model="isActive" class="custom-control-input">
               <label class="custom-control-label" for="no">No</label>
             </div>
-            <small v-show="errors.has('user.password')" class="text-danger">{{ errors.first('user.password') }}</small>
+            <small v-show="errors.has('user.isactive')" class="text-danger">{{ errors.first('user.isactive') }}</small>
           </div>
 
           <div class="form-group col-md-12">
@@ -161,7 +165,10 @@ export default {
       phone: '',
       address: '',
       password: '',
-      edit: false
+      edit: false,
+      isActive: 1,
+      gender: 'Male',
+      id: null
     }
   },
   created() {
@@ -224,7 +231,105 @@ export default {
       this.email = "",
       this.phone = "",
       this.address = "",
+      this.gender = "Male",
+      this.isActive = '1'
       this.$validator.reset("user");
+    },
+    storeUser() {
+      this.id ? this.updateUser(this.id) : this.createUser();
+    },
+    createUser() {
+      this.$validator.validateAll("user").then(async result => {
+        if (!result) return;
+        this.$axios
+          .post(`users`, {
+            name: this.name,
+            email: this.email,
+            phone: this.phone,
+            password: this.password,
+            gender: this.gender,
+            is_active: this.isActive,
+            address: this.address
+          })
+          .then(response => {
+            if (response.status == 201) {
+              this.$swal.fire(response.data.meta.message, "", "success");
+              this.closeFormModal();
+              this.getUsers();
+            }
+          })
+          .catch(error => {
+            let errObj = Object.assign({}, error)
+            this.$swal.fire(errObj.response.data.meta.message, "", "warning");
+          });
+        });
+      },
+    updateUser(id) {
+      this.$validator.validateAll('user').then(async result => {
+        if (!result) return;
+        this.$axios.put(`users/${id}`, {
+            name: this.name,
+            email: this.email,
+            phone: this.phone,
+            password: this.password,
+            gender: this.gender,
+            is_active: this.isActive,
+            address: this.address
+          })
+          .then(response => {
+            this.getUsers();
+            this.closeFormModal();
+            this.$swal(
+              'Saved!',
+              'Successfully updated.',
+              'success'
+            )
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      });
+    },
+    openFormEdit(item) {
+      this.edit = true;
+      this.$refs['modal-user'].show();
+      this.getDataEdit(item.id);
+    },
+    async getDataEdit(id) {
+      let user = await this.users.find(item => item.id == id);
+      this.id = user.id;
+      this.name = user.name;
+      this.email = user.email;
+      this.password = user.password;
+      this.gender = user.gender;
+      this.isActive = user.is_active;
+      this.address = user.address;
+      this.phone = user.phone;
+    },
+    deleteData(item) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(result => {
+        if (result.value) {
+          this.$axios
+            .delete(`users/${item.id}`)
+            .then(response => {
+              this.$swal("Deleted!", response.data.message, "success");
+            })
+            .catch(e => {
+              console.log(e);
+            })
+            .then(() => {
+              this.getUsers();
+            });
+        }
+      });
     },
   }
 }

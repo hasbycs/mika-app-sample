@@ -3,10 +3,10 @@
     <div>
       <logo />
       <h1 class="title">
-        Transnet
+        Mika-APP
       </h1>
       <h2 class="subtitle">
-        My gnarly Nuxt.js project
+        Simple CRUD User With Pagination
       </h2>
       <div class="links">
         <a
@@ -17,7 +17,7 @@
           Documentation
         </a>
         <a
-          href="https://github.com/nuxt/nuxt.js"
+          href="https://github.com/hasbycs"
           target="_blank"
           class="button--grey"
         >

@@ -5,14 +5,14 @@
       <div class="head">
         <div class="navbar navbar-expand-sm navbar-primary bg-primary pr-0 pr-md-16pt" id="navbar" data-primary>
           <nuxt-link to='/' class="navbar-brand">
-            <span class="d-none d-md-block">Mika-App</span>
+            <span class="d-none d-md-block text-white">Mika-App</span>
           </nuxt-link>
           <ul class="nav navbar-nav ml-auto d-none d-sm-flex">
             <li class="nav-item">
-              <nuxt-link to="/logout" class="nav-link">Logout</nuxt-link>
+              <nuxt-link to="/users" class="nav-link text-white"><h4>Users List</h4></nuxt-link>
             </li>
-            <li class="nav-item">
-              <nuxt-link to="/users" class="nav-link">Users List</nuxt-link>
+            <li class="nav-item float-right" @click="logout">
+              <nuxt-link to="/login" class="nav-link">Logout</nuxt-link>
             </li>
           </ul>
         </div>

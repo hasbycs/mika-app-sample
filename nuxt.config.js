@@ -50,7 +50,8 @@ export default {
   */
   plugins: [
     '~/plugins/axios.js',
-    '~/plugins/vee-validate.js'
+    '~/plugins/vee-validate.js',
+    '~/plugins/sweetalert.js'
   ],
   /*
   ** Nuxt.js dev-modules
